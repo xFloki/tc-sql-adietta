@@ -216,3 +216,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Credenciales de Google Cloud (clave JSON de la service account)
+credentials/
