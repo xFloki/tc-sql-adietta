@@ -1,0 +1,68 @@
+// Smart Solutions Dietta — modelo ER
+// Pegar en https://dbdiagram.io y exportar como PNG a docs/er_diagram.png
+
+Table customers {
+  customer_id INT64 [pk]
+  first_name STRING [not null]
+  last_name STRING [not null]
+  email STRING [unique, not null]
+  phone STRING
+  country STRING [not null]
+  city STRING [not null]
+  acquisition_channel STRING [not null]
+  registration_date DATE [not null]
+}
+
+Table categories {
+  category_id INT64 [pk]
+  name STRING [not null]
+  description STRING [not null]
+}
+
+Table products {
+  product_id INT64 [pk]
+  category_id INT64 [not null, ref: > categories.category_id]
+  name STRING [not null]
+  price FLOAT64 [not null]
+  cost FLOAT64 [not null]
+  stock INT64 [not null]
+  is_active BOOL [not null]
+}
+
+Table orders {
+  order_id INT64 [pk]
+  customer_id INT64 [not null, ref: > customers.customer_id]
+  order_date TIMESTAMP [not null]
+  status STRING [not null]
+  shipping_address STRING [not null]
+  shipping_city STRING [not null]
+  shipping_country STRING [not null]
+  shipped_date DATE
+  delivered_date DATE
+}
+
+Table order_items {
+  order_item_id INT64 [pk]
+  order_id INT64 [not null, ref: > orders.order_id]
+  product_id INT64 [not null, ref: > products.product_id]
+  quantity INT64 [not null]
+  unit_price FLOAT64 [not null]
+  discount_pct FLOAT64 [not null]
+}
+
+Table payments {
+  payment_id INT64 [pk]
+  order_id INT64 [not null, ref: > orders.order_id]
+  payment_method STRING [not null]
+  status STRING [not null]
+  amount FLOAT64 [not null]
+  payment_date TIMESTAMP [not null]
+}
+
+Table reviews {
+  review_id INT64 [pk]
+  order_item_id INT64 [unique, not null, ref: - order_items.order_item_id]
+  rating INT64 [not null]
+  comment STRING
+  review_date DATE [not null]
+}
